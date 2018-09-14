@@ -77,7 +77,6 @@ $(document).ready(function() {
 // Your code here....
 var firstNumber = "";
 var operator = "";
-var mathOperator = "";
 var secondNumber = "";
 var isFinal = false;
 var result = 0;
@@ -121,9 +120,8 @@ $(".operator").on("click", function(){
         firstNumber = "0";
         $("#first-number").text(firstNumber);
     } 
-    operator = $(this).attr("value");
+    operator = $(this).attr("data-operator");
     $("#operator").text(operator);
-    mathOperator = $(this).attr("data-operator");
 
     isFinal = true;
 })
@@ -132,10 +130,10 @@ $(".equal").on("click", function () {
     if (firstNumber === "" || secondNumber === "") {
         alert ("Please input your desired calculation.");
     } else {
-        if (mathOperator === "^") {
+        if (operator === "^") {
             result = Math.pow(parseInt(firstNumber),parseInt(secondNumber));
         } else {
-            result = eval(parseInt(firstNumber) + mathOperator + parseInt(secondNumber));
+            result = eval(parseInt(firstNumber) + operator + parseInt(secondNumber));
         }
         $("#result").text(result);
         hasBeenCalculated = true;
