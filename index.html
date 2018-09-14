@@ -32,21 +32,21 @@
             <button id="button-1" class="btn btn-primary number" value="1"><h1>1</h1></button>
             <button id="button-2" class="btn btn-primary number" value="2"><h1>2</h1></button>
             <button id="button-3" class="btn btn-primary number" value="3"><h1>3</h1></button>
-            <button id="button-plus" class="btn btn-danger operator" value="plus"><h1>+</h1></button>
+            <button id="button-plus" class="btn btn-danger operator" value="plus" data-operator="+"><h1>+</h1></button>
             <br><br>
             <button id="button-4" class="btn btn-primary number" value="4"><h1>4</h1></button>
             <button id="button-5" class="btn btn-primary number" value="5"><h1>5</h1></button>
             <button id="button-6" class="btn btn-primary number" value="6"><h1>6</h1></button>
-            <button id="button-minus" class="btn btn-danger operator" value="minus"><h1>&minus;</h1></button>
+            <button id="button-minus" class="btn btn-danger operator" value="minus" data-operator="-"><h1>&minus;</h1></button>
             <br><br>
             <button id="button-7" class="btn btn-primary number" value="7"><h1>7</h1></button>
             <button id="button-8" class="btn btn-primary number" value="8"><h1>8</h1></button>
             <button id="button-9" class="btn btn-primary number" value="9"><h1>9</h1></button>
-            <button id="button-multiply" class="btn btn-danger operator" value="times"><h1>&times;</h1></button>
+            <button id="button-multiply" class="btn btn-danger operator" value="multiply" data-operator="*"><h1>&times;</h1></button>
             <br><br>
             <button id="button-0" class="btn btn-primary number" value="0"><h1>0</h1></button>
-            <button id="button-divide" class="btn btn-danger operator" value="divide"><h1>&divide;</h1></button>
-            <button id="button-power" class="btn btn-danger operator" value="power"><h1>^</h1></button>
+            <button id="button-divide" class="btn btn-danger operator" value="divide" data-operator="/"><h1>&divide;</h1></button>
+            <button id="button-power" class="btn btn-danger operator" value="power" data-operator="^"><h1>^</h1></button>
             <button id="button-equal" class="btn btn-success equal" value="equals"><h1>=</h1></button>
             <br><br>
             <button id="button-clear" class="btn btn-dark clear" value="clear"><h1>clear</h1></button>
@@ -75,7 +75,76 @@
 $(document).ready(function() {
 
 // Your code here...
+var firstNumber = "";
+var operator = "";
+var mathOperator = "";
+var secondNumber = "";
+var isFinal = false;
+var result = 0;
+var hasBeenCalculated = false;
 
+function clear() {
+    firstNumber = "";
+    operator = "";
+    mathOperator = "";
+    secondNumber = "";
+    isFinal = false;
+    result = 0;
+    $("#first-number").empty();
+    $("#second-number").empty();
+    $("#operator").empty();
+    $("#result").empty();
+}
+
+$(".number").on("click", function() {
+    if (hasBeenCalculated) {
+        clear();
+        hasBeenCalculated = false;
+    }
+
+    if (!isFinal) {
+        firstNumber += $(this).attr("value");
+        $("#first-number").text(firstNumber);
+    } else {
+        secondNumber += $(this).attr("value");
+        $("#second-number").text(secondNumber);
+    }
+});
+
+$(".operator").on("click", function(){
+    if (hasBeenCalculated) {
+        clear();
+        hasBeenCalculated = false;
+    }
+    
+    if (firstNumber === ""){
+        firstNumber = "0";
+        $("#first-number").text(firstNumber);
+    } 
+    operator = $(this).attr("value");
+    $("#operator").text(operator);
+    mathOperator = $(this).attr("data-operator");
+
+    isFinal = true;
+})
+
+$(".equal").on("click", function () {
+    if (firstNumber === "" || secondNumber === "") {
+        alert ("Please input your desired calculation.");
+    } else {
+        if (mathOperator === "^") {
+            result = Math.pow(parseInt(firstNumber),parseInt(secondNumber));
+        } else {
+            result = eval(parseInt(firstNumber) + mathOperator + parseInt(secondNumber));
+        }
+        $("#result").text(result);
+        hasBeenCalculated = true;
+    }
+})
+
+$(".clear").on("click", function() {
+    clear();
+});
 
 });
 
